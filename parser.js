@@ -73,6 +73,10 @@ const renderHTML = tokens => {
         renderResult += "<" + token.tag + ">";
         break;
 
+      case "link_open":
+        renderResult += '<a href="' + token.attrs[0][1] + '">';
+        break;
+
       case "heading_close":
       case "paragraph_close":
       case "bullet_list_close":
@@ -80,6 +84,7 @@ const renderHTML = tokens => {
       case "list_item_close":
       case "strong_close":
       case "em_close":
+      case "link_close":
         renderResult += "</" + token.tag + ">";
         break;
 
@@ -186,16 +191,25 @@ const renderText = (tokens, useColor, level) => {
         renderResult += "```\n\n";
         break;
 
+      case "link_open":
+        if (useColor) renderResult += "\033[4m";
+        break;
+
+      case "link_close":
+        if (useColor) renderResult += "\033[0m";
+        renderResult += " (" + tokens[i - 2].attrs[0][1] + ")";
+        break;
+
       case "image":
         renderResult += "Image: " + token.attrs[0][1] + "\n";
         renderResult += token.content;
         break;
-
-      default:
-        console.log(token);
     }
 
+    console.log(token);
+    console.group();
     renderResult += renderText(token.children, useColor, level + 1);
+    console.groupEnd();
   }
   return renderResult;
 };

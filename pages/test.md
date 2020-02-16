@@ -12,6 +12,8 @@ First off, some basic formatting.
 
 This text is **bold**, and this one is in _italics_. This next one is **_both bold and italic_**.
 
+This is a [link](https://github.com/HizkiFW).
+
 ## Heading 2
 
 This is a paragraph
