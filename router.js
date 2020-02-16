@@ -2,11 +2,14 @@ const express = require("express");
 const router = express.Router();
 const parser = require("./parser");
 const fs = require("fs");
-const CLI_UA_REGEX = /(curl|wget)\/.*/i;
+const CLI_UA_REGEX = /^(curl|wget)(.*)/i;
 
 router.get("/*", function(req, res, next) {
-  const path = parser.parseUrl(req.path);
+  const path = parser.parseUrl(req.url);
   const userAgent = req.get("User-Agent");
+
+  console.log(path);
+  console.log(userAgent);
 
   if (!path.ok) {
     return next();
@@ -20,6 +23,8 @@ router.get("/*", function(req, res, next) {
   }
   if (path.options.colors) useAnsiColors = true;
 
+  console.log({ outputFormat, useAnsiColors });
+
   fs.readFile(path.location, (err, data) => {
     if (err) next();
 
@@ -27,7 +32,14 @@ router.get("/*", function(req, res, next) {
       outputFormat,
       useAnsiColors
     });
-    res.render("default", { title: page.meta.title, contents: page.contents });
+
+    if (outputFormat === "html")
+      res.render("default", {
+        title: page.meta.title,
+        contents: page.contents,
+        request: req
+      });
+    else res.send(page.contents);
   });
 });
 

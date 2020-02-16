@@ -8,6 +8,10 @@ tags: [testing]
 
 Welcome to the test page. This page should demonstrate my web server's ability to transform markdown into both HTML and plaintext. It should render all the tags, links, text wrapping, etc. The following is just a jumble of all markdown elements.
 
+First off, some basic formatting.
+
+This text is **bold**, and this one is in _italics_. This next one is **_both bold and italic_**.
+
 ## Heading 2
 
 This is a paragraph
