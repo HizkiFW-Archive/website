@@ -38,7 +38,7 @@ And here's a numbered list:
 
 Some code in a block:
 
-```
+```java
 public class Main {
   public static void main(String[] args) {
     System.out.println("Hello, world!");

@@ -3,7 +3,7 @@ title: Hello!
 description: HizkiFW's Homepage
 ---
 
-```
+```plaintext
 HHHH        HHHH II ZZZZZZZ    hello@hizkifw.me
 HHHH        HHHH II     ZZ     ----------------
 HHHH        HHHH II   ZZ       Welcome to my personal website

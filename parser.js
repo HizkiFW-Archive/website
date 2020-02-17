@@ -126,7 +126,11 @@ const renderHTML = tokens => {
         break;
       case "fence":
         renderResult +=
-          "<pre><code>" + escapeHTML(token.content) + "</code></pre>";
+          '<pre><code class="' +
+          token.info +
+          '">' +
+          escapeHTML(token.content) +
+          "</code></pre>";
         break;
 
       case "image":

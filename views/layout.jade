@@ -5,12 +5,17 @@ html(lang='en')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Montserrat:700|Open+Sans:300,400,400i,700,700i&display=swap')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Montserrat:700&display=swap')
+
+    // highlight.js
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/monokai-sublime.min.css')
 
     // Global site tag (gtag.js) - Google Analytics
-    script(async, src="https://www.googletagmanager.com/gtag/js?id=UA-69610279-5")
+    script(async, src='https://www.googletagmanager.com/gtag/js?id=UA-69610279-5')
     script
       | window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','UA-69610279-5');
+      | hljs.initHighlightingOnLoad();
 
   body
     #container
