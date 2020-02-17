@@ -5,6 +5,7 @@ html(lang='en')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Montserrat:700|Open+Sans:300,400,400i,700,700i&display=swap')
 
     // Global site tag (gtag.js) - Google Analytics
     script(async, src="https://www.googletagmanager.com/gtag/js?id=UA-69610279-5")
@@ -13,4 +14,7 @@ html(lang='en')
 
   body
     #container
-      block content
+      #content
+        block content
+      #footer
+        | Copyright (c) Hizkia Felix. All blog posts licensed under CC BY-NC-SA 4.0.

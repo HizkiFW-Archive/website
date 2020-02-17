@@ -48,6 +48,33 @@ const parseUrl = url => {
   };
 };
 
+const wrapText = (text, limit) => {
+  const words = text.split(" ");
+  let wrapped = "";
+
+  let currentLine = "";
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    const split = word.split("\n\n");
+
+    if (split.length > 1) {
+      wrapped += currentLine + split[0] + "\n\n";
+      currentLine = split[1] + " ";
+      continue;
+    }
+
+    if (currentLine.length + word.length > limit) {
+      wrapped += currentLine.trim() + "\n";
+      currentLine = "";
+    }
+    currentLine += word + " ";
+  }
+
+  wrapped += currentLine.trim() + "\n";
+
+  return wrapped;
+};
+
 const escapeHTML = unsafe => {
   return unsafe
     .replace(/&/g, "&amp;")
@@ -98,7 +125,8 @@ const renderHTML = tokens => {
         renderResult += "<code>" + escapeHTML(token.content) + "</code>";
         break;
       case "fence":
-        renderResult += "<pre>" + escapeHTML(token.content) + "</pre>";
+        renderResult +=
+          "<pre><code>" + escapeHTML(token.content) + "</code></pre>";
         break;
 
       case "image":
@@ -119,6 +147,8 @@ const renderHTML = tokens => {
 const renderText = (tokens, useColor, level) => {
   if (tokens === null) return "";
   if (typeof level === "undefined" || level === null) level = 0;
+
+  const lineLength = 80;
 
   let renderResult = "";
   for (let i = 0; i < tokens.length; i++) {
@@ -197,7 +227,15 @@ const renderText = (tokens, useColor, level) => {
 
       case "link_close":
         if (useColor) renderResult += "\033[0m";
-        renderResult += " (" + tokens[i - 2].attrs[0][1] + ")";
+        let linkToken = null;
+        for (let n = i; n > 0; n--) {
+          if (tokens[n].type === "link_open") {
+            linkToken = tokens[n];
+            break;
+          }
+        }
+        if (linkToken === null) break;
+        renderResult += " (" + linkToken.attrs[0][1] + ")";
         break;
 
       case "image":
@@ -229,7 +267,7 @@ const parsePage = (text, options) => {
     for (metaToken of metaTokens) {
       if (metaToken.type !== "text") continue;
       const property = metaToken.content.split(":")[0];
-      const value = metaToken.content.substring(property.length + 1);
+      let value = metaToken.content.substring(property.length + 1).trim();
       pageMetadata[property.trim()] = value.trim();
     }
   }
@@ -238,7 +276,7 @@ const parsePage = (text, options) => {
   tokens.splice(0, startIndex);
   if (options.outputFormat === "plain") {
     // Render plaintext
-    renderResult += renderText(tokens, options.useAnsiColors);
+    renderResult += wrapText(renderText(tokens, options.useAnsiColors), 80);
   } else {
     // Render HTML
     renderResult += renderHTML(tokens);
